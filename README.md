@@ -1,2 +1,2 @@
-# LighteStripe
+# LiteStrip
 
