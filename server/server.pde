@@ -1,13 +1,6 @@
 import codeanticode.syphon.*;
 import processing.serial.*;
 
-PImage img;
-SyphonClient client;
-String hexval;
-String info = "";
-Serial serial;
-boolean active = true;
-
 int scale = 2;
 int infopadding = 0;
 int textSize = 18;
@@ -18,6 +11,16 @@ int h = 1080;
 
 int fps = 30;
 
+int baudrate = 4800;
+String device = "/dev/cu.usbmodemHIDPC1";
+
+
+PImage img;
+SyphonClient client;
+String hexval;
+String info = "";
+Serial serial;
+boolean active = true;
 
 void settings() {
   size(w/scale, h/scale + infopadding, P3D);
@@ -29,8 +32,8 @@ void setup() {
   // Create syhpon client to receive frames 
   // from the first available running server: 
   client = new SyphonClient(this);
-  
-  serial = new Serial(this, "/dev/cu.usbmodemHIDPC1", 4800);
+
+  serial = new Serial(this, device, baudrate);
 }
 
 void draw() {
@@ -54,6 +57,7 @@ void draw() {
   if (img != null) {
     image(img, 0, 0, width, height);
   }
+  stroke(0);
   text(info, 4, textSize+4); 
   fill(textColor);
 }
@@ -61,22 +65,7 @@ void draw() {
 void keyPressed() {
   if (key == ' ') {
     toggleActive();
-  } else if (key == 'd') {
-    println(client.getServerName());
-  } else if (key == 'c') {
-    String result = hexval.substring(2, 4);
-    println(hexval + " " + result);        
-    if(result == "FF") {
-      serial.write('H');
-    } else {
-      serial.write('L');
-    }
-  } else if (key == 'l') {
-    serial.write('L');
-  } else if (key == 'h') {
-    serial.write('H');
   }
-  
   if (key=='i') {
     if(info=="") {
       syphonInfo();
@@ -87,32 +76,29 @@ void keyPressed() {
 }
 
 void syphonInfo() {
-
-  HashMap<String, String>[] allServers = SyphonClient.listServers();
-
-  int nServers = allServers.length;
-  
+  print("\n");
   info = "";
 
-  info+="Found " + nServers + " syphon server(s):";
+  HashMap<String, String>[] allServers = SyphonClient.listServers();
+  String appName = allServers[0].get("AppName");
+  String serverName = allServers[0].get("ServerName");
 
-  for (int i = 0; i < nServers; i++) {
+  info+="Siphon: \t" 
+    + appName + ", " + serverName + " " 
+    + img.width + "x" + img.height 
+    + " (Found " + allServers.length + " server)";
     
-    String appName = allServers[i].get("AppName");
-    String serverName = allServers[i].get("ServerName");
-    
-    info+="\n" + i + ": \t" + appName + ", " + serverName;
-  }
-  
-  info+="\nCurrent image info:";
+  info+="\nDevice: \t" + device + ", " + baudrate + " baud";
+  info+="\nFPS: \t" + "Target " + fps + ", \tobserved " + frameRate;
   info+="\nActive: \t" + active;
-  info+="\nSize: \t" + img.width + "x" + img.height;
-  info+="\nFPS:" + " \tObserved " + frameRate + ", \ttarget " + fps;
   
   println(info);
-  
-  //println(img.textureName());
-  
+}
+
+void infoUpdate() {
+  if(info!=""){
+    syphonInfo();
+  }
 }
 
 void toggleActive() {
@@ -122,4 +108,5 @@ void toggleActive() {
   } else {
     client.stop();
   }
+  infoUpdate();
 }
