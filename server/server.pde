@@ -11,9 +11,8 @@ int h = 1080;
 
 int fps = 30;
 
-int baudrate = 4800;
-String device = "/dev/cu.usbmodemHIDPC1";
-
+String device = "/dev/cu.wchusbserial1410";
+int baudrate = 9600;
 
 PImage img;
 SyphonClient client;
@@ -21,19 +20,30 @@ String hexval;
 String info = "";
 Serial serial;
 boolean active = true;
+byte[] buf = new byte[144];
 
 void settings() {
   size(w/scale, h/scale + infopadding, P3D);
+//  pixelDensity(2);
 }
 
 void setup() {
   frameRate(fps);
   textSize(textSize);
+  textMode(SHAPE);
   // Create syhpon client to receive frames 
   // from the first available running server: 
   client = new SyphonClient(this);
 
-  serial = new Serial(this, device, baudrate);
+  try {
+    serial = new Serial(this, device, baudrate);
+  } catch(Exception e) {
+    print(e);
+  }
+  
+  buf[0] = byte(255);
+  
+  print(buf[0]);
 }
 
 void draw() {
@@ -86,10 +96,10 @@ void syphonInfo() {
   info+="Siphon: \t" 
     + appName + ", " + serverName + " " 
     + img.width + "x" + img.height 
-    + " (Found " + allServers.length + " server)";
+    + " (Found " + allServers.length + ")";
     
   info+="\nDevice: \t" + device + ", " + baudrate + " baud";
-  info+="\nFPS: \t" + "Target " + fps + ", \tobserved " + frameRate;
+  info+="\nFPS: \t" + "Target " + fps + ", observed " + frameRate;
   info+="\nActive: \t" + active;
   
   println(info);
