@@ -69,7 +69,7 @@ void draw() {
 }
 
 void keyPressed() {
-  if (key == ' ') {
+  if (key == 'd') {
     toggleActive();
   }
   if (key=='i') {
@@ -79,6 +79,18 @@ void keyPressed() {
       info = "";
     }
   }
+  if (key=='r') {
+    syphonInfo();
+  }
+  if (key=='h') {
+    if(info=="") {
+      info = "h    Show/hide this help menu\n" +
+      "i    Show/hide debug menu\n" + 
+      "r    Update debug menu\n" + 
+      "d    Enable/disable stream\n";
+    }
+  }
+    
 }
 
 void syphonInfo() {
