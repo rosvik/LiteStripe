@@ -21,7 +21,7 @@ long g;
 long b;
 
 void setup() {
-  Serial.begin(4800);
+  Serial.begin(9600);
   long r = 10;
   long g = 10;
   long b = 10;
@@ -29,15 +29,12 @@ void setup() {
 
 void loop() {
   if (Serial.available() > 0) {
-
     String incomingString = Serial.readStringUntil('X');
-
-    const char* v2 = incomingString.c_str();
-    
+    const char* incomingChars = incomingString.c_str();
     Serial.println("Incoming String: " + incomingString);
 
     if (incomingString.length() == 6) {
-      long number = strtol(v2, NULL, 16);
+      long number = strtol(incomingChars, NULL, 16);
       r = number >> 16;
       g = number >> 8 & 0xFF;
       b = number & 0xFF;

@@ -57,12 +57,8 @@ void draw() {
 
     hexval = hex(img.get(0, 0));
 
-    String result = hexval.substring(2, 4);
-    if(result.equals("FF")) {
-      serial.write('H');
-    } else {
-      serial.write('L');
-    }
+    String result = hexval.substring(2, 8); //FF4F348E
+    serial.write(result + 'X');
   }
   if (img != null) {
     image(img, 0, 0, width, height);
@@ -101,6 +97,8 @@ void syphonInfo() {
   info+="\nDevice: \t" + device + ", " + baudrate + " baud";
   info+="\nFPS: \t" + "Target " + fps + ", observed " + frameRate;
   info+="\nActive: \t" + active;
+  info+="\nHexval: \t" + hexval;
+  
   
   println(info);
 }
