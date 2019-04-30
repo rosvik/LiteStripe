@@ -9,40 +9,52 @@
 
 #include <PololuLedStrip.h>
 
-boolean active = true;
-
 // Create an ledStrip object and specify the pin it will use.
 PololuLedStrip<11> ledStrip;
 
-// Create a buffer for holding the colors (3 bytes per color).
 #define LED_COUNT 144
+
 rgb_color colors[LED_COUNT];
-byte incomingByte;
+boolean active = true;
+long r;
+long g;
+long b;
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(4800);
+  long r = 10;
+  long g = 10;
+  long b = 10;
 }
 
-void loop()
-{
+void loop() {
   if (Serial.available() > 0) {
 
+    String incomingString = Serial.readStringUntil('X');
+
+    const char* v2 = incomingString.c_str();
+    
+    Serial.println("Incoming String: " + incomingString);
+
+    if (incomingString.length() == 6) {
+      long number = strtol(v2, NULL, 16);
+      r = number >> 16;
+      g = number >> 8 & 0xFF;
+      b = number & 0xFF;
+      Serial.println(String(number) + ": " + String(r) + ", " + String(b) + ", " + String(g));
+    }
+        
     // Update the colors.
     byte time = millis() >> 2;
-    for (uint16_t i = 0; i < LED_COUNT; i++)
-    {
-      byte x = time%256+i;
-      colors[i] = rgb_color(10, 10, 10);
+
+    for (uint16_t i = 0; i < LED_COUNT; i++) {
+      colors[i] = rgb_color(r, g, b);
     }
   
-  
-    // Write the colors to the LED strip.
-    incomingByte = Serial.read();
-
-    if (incomingByte == 'L') {
+    if (incomingString == "HEY") {
       active = false;
     }
-    if (incomingByte == 'H') {
+    if (incomingString == "ABC") {
       active = true;
     }
 
