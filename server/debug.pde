@@ -19,8 +19,11 @@ void syphonInfo() {
     if(!trySerialConnect()) {
       info+="\nSerial unavaliable (r to retry)";
     }
-  
+      
     println(info);
+    
+    print(getColorsForStrip(ledStartX, ledStartY, ledStep));
+    
   } else {
     info = "";
   }
