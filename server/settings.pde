@@ -1,7 +1,8 @@
  
-// Actual window size
-// height = h/scale
-// width = w/scale
+// Actual window size:
+//     height = h/scale
+//     width = w/scale
+
 int w = 1920;
 int h = 1080;
 int scale = 2;
