@@ -3,22 +3,22 @@
 //     height = h/scale
 //     width = w/scale
 
-int w = 1920;
-int h = 1080;
-int scale = 2;
+final int w = 1920;
+final int h = 1080;
+final int scale = 2;
 
-int fps = 30;
+final int fps = 30;
 
 // Info text
-int textSize = 18;
-int textColor = 255;
+final int textSize = 18;
+final int textColor = 255;
 
 // Arduino info
-String device = "/dev/cu.wchusbserial1410";
-int baudrate = 9600;
-int ledCount = 144;
+final String device = "/dev/cu.wchusbserial1410";
+final int baudrate = 9600;
+final int ledCount = 144;
 
 // Color reading start position (ProPresenter scale)
-int ledStartX = 960;
-int ledStartY = 300;
-int ledStep = 2;
+final int ledStartX = 960;
+final int ledStartY = 300;
+final int ledStep = 2;
