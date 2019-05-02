@@ -49,6 +49,7 @@ void setup() {
 void draw() {
   background(255);
   if (client.newFrame()) {
+
     // The first time getImage() is called with 
     // a null argument, it will initialize the PImage
     // object with the correct size.
@@ -58,7 +59,9 @@ void draw() {
     hexval = hex(img.get(0, 0));
 
     String result = hexval.substring(2, 8); //FF4F348E
-    serial.write(result + 'X');
+    if (serial != null) {
+      serial.write(result + 'X');
+    }
   }
   if (img != null) {
     image(img, 0, 0, width, height);
@@ -66,67 +69,4 @@ void draw() {
   stroke(0);
   text(info, 4, textSize+4); 
   fill(textColor);
-}
-
-void keyPressed() {
-  if (key == 'd') {
-    toggleActive();
-  }
-  if (key=='i') {
-    if(info=="") {
-      syphonInfo();
-    } else {
-      info = "";
-    }
-  }
-  if (key=='r') {
-    syphonInfo();
-  }
-  if (key=='h') {
-    if(info=="") {
-      info = "h    Show/hide this help menu\n" +
-      "i    Show/hide debug menu\n" + 
-      "r    Update debug menu\n" + 
-      "d    Enable/disable stream\n";
-    }
-  }
-    
-}
-
-void syphonInfo() {
-  print("\n");
-  info = "";
-
-  HashMap<String, String>[] allServers = SyphonClient.listServers();
-  String appName = allServers[0].get("AppName");
-  String serverName = allServers[0].get("ServerName");
-
-  info+="Siphon: \t" 
-    + appName + ", " + serverName + " " 
-    + img.width + "x" + img.height 
-    + " (Found " + allServers.length + ")";
-    
-  info+="\nDevice: \t" + device + ", " + baudrate + " baud";
-  info+="\nFPS: \t" + "Target " + fps + ", observed " + frameRate;
-  info+="\nActive: \t" + active;
-  info+="\nHexval: \t" + hexval;
-  
-  
-  println(info);
-}
-
-void infoUpdate() {
-  if(info!=""){
-    syphonInfo();
-  }
-}
-
-void toggleActive() {
-  active = !active;
-  if(active) {
-    client = new SyphonClient(this);
-  } else {
-    client.stop();
-  }
-  infoUpdate();
 }
