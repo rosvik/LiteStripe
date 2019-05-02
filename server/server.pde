@@ -45,7 +45,7 @@ void draw() {
     img = client.getImage(img); // load the pixels array with the updated image info (slow)
     //imig = client.getImage(img, false); // does not load the pixels array (faster)    
 
-    hexval = hex(img.get(0, 0));
+    hexval = hex(img.get(ledStartX, ledStartY)).substring(2, 8);
 
     if (serial != null) {
       String msg = getColorsForStrip(ledStartX, ledStartY, ledStep);

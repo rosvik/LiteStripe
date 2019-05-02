@@ -15,7 +15,7 @@ void syphonInfo() {
     info+="\nDevice:\t " + device + ", " + baudrate + " baud";
     info+="\nFPS:\t " + "Target " + fps + ", observed " + frameRate;
     info+="\nActive:\t " + active;
-    info+="\n0,0 value:\t " + hexval;
+    info+="\n" + ledStartX + "," + ledStartY + " value:\t #" + hexval;
     if(!trySerialConnect()) {
       info+="\nSerial unavaliable (r to retry)";
     }
