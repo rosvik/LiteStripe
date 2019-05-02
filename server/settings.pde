@@ -15,10 +15,10 @@ final int textColor = 255;
 
 // Arduino info
 final String device = "/dev/cu.wchusbserial1410";
-final int baudrate = 9600;
+final int baudrate = 115200;
 final int ledCount = 144;
 
 // Color reading start position (ProPresenter scale)
-final int ledStartX = 960;
+final int ledStartX = 610;
 final int ledStartY = 300;
-final int ledStep = 2;
+final int ledStep = 4;

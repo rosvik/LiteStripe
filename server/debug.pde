@@ -23,7 +23,6 @@ void syphonInfo() {
     println(info);
     
     print(getColorsForStrip(ledStartX, ledStartY, ledStep));
-    
   } else {
     info = "";
   }

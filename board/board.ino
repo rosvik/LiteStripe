@@ -6,7 +6,7 @@ PololuLedStrip<11> ledStrip;
 rgb_color colors[LED_COUNT];
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
 }
 
 void loop() {
